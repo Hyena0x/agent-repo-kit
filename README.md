@@ -13,6 +13,7 @@ AI coding tools can move fast enough to make small mistakes expensive. A repo th
 `repo-guard-starter` keeps the first version intentionally small:
 
 - Claude Code-first guardrails for day-to-day repo work
+- A shared policy layer that can be rendered into tool-specific adapters
 - A publish-time audit that inspects the exact `npm pack` tarball
 - CI wiring that blocks a merge when risky files would ship
 
@@ -20,10 +21,13 @@ AI coding tools can move fast enough to make small mistakes expensive. A repo th
 
 - `CLAUDE.md` for project guidance and security red lines
 - `REVIEW.md` for review-specific checks
+- `adapters/policy/repo-guard-policy.mjs` as the shared policy source of truth
+- `adapters/targets/*` renderers so Claude Code files are generated from shared policy
 - `.claude/settings.json` with minimal permission rules and a registered `PreToolUse` hook
 - `.claude/hooks/pre-tool-check.js` to deny obviously destructive Bash commands
 - `.claude/skills/release-guard/SKILL.md` for publish-time guidance
 - `.claude/commands/release-guard.md` so teams also get a real `/release-guard` slash command
+- `adapters/generated/repo-guard-policy.json` as a neutral manifest for future tool adapters
 - `scripts/audit-pack.mjs` to inspect packed artifacts for risky files
 - `.github/workflows/release-guard.yml` to run the guard in PRs
 
@@ -68,14 +72,35 @@ Release guard blocked this package. Tighten package.json "files" or your ignore 
 
 Warnings and failures both exit non-zero on purpose, so CI can fail early.
 
+## Tool adapters
+
+The shared policy now lives outside the Claude-specific files.
+
+- edit `adapters/policy/repo-guard-policy.mjs`
+- run `npm run adapters:render`
+- verify with `npm run adapters:check`
+
+Today the repo ships one real target adapter for Claude Code plus one generic JSON manifest exporter. That is enough to keep Claude Code first-class while giving future Codex, Cursor, Amp, or custom internal adapters a stable input format. More detail lives in `adapters/README.md` and `docs/adapter-architecture.md`.
+
 ## Design notes
 
-This repo is intentionally Claude Code-first instead of pretending every AI coding tool works the same way today. The repo-level permissions, hook registration, and slash-command ergonomics are tailored for Claude Code first. The release audit is tool-agnostic by design, which is the part we can reuse later in Codex, Cursor, Amp, or other AI-assisted workflows.
+This repo is intentionally Claude Code-first instead of pretending every AI coding tool works the same way today. The repo-level permissions, hook registration, and slash-command ergonomics are tailored for Claude Code first. The difference now is that those Claude files are rendered from a shared policy model, so the release audit, review rules, and risky-command semantics are no longer trapped inside one tool's syntax.
 
 ## Repo layout
 
 ```text
 repo-guard-starter/
+├── adapters/
+│   ├── generated/
+│   │   └── repo-guard-policy.json
+│   ├── policy/
+│   │   └── repo-guard-policy.mjs
+│   ├── targets/
+│   │   ├── claude-code/
+│   │   │   └── render.mjs
+│   │   └── generic/
+│   │       └── render.mjs
+│   └── README.md
 ├── .claude/
 │   ├── commands/
 │   │   └── release-guard.md
@@ -94,10 +119,14 @@ repo-guard-starter/
 ├── CLAUDE.md
 ├── REVIEW.md
 ├── README.md
+├── docs/
+│   └── adapter-architecture.md
 ├── package.json
 ├── scripts/
-│   └── audit-pack.mjs
+│   ├── audit-pack.mjs
+│   └── render-adapters.mjs
 └── tests/
+    ├── adapter-renderer.test.mjs
     └── audit-pack.test.mjs
 ```
 

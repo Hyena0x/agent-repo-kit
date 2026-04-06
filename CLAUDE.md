@@ -1,5 +1,7 @@
 # Project Overview
 
+> Managed by `npm run adapters:render`. Edit `adapters/policy/repo-guard-policy.mjs` instead of hand-editing this file.
+
 This repository provides Claude Code-first guardrails for AI coding repos plus a publish-time release guard for Node packages.
 
 The main goals are:
@@ -16,6 +18,7 @@ Do not read or print secrets from:
 - `./.env.*`
 - `./secrets/**`
 - `./certs/**`
+- `./*.pem`
 - `./**/*.pem`
 
 Do not run destructive Bash commands such as:
@@ -44,9 +47,9 @@ When making changes in this repo:
 Before suggesting a release or publish action:
 
 1. Run `npm run audit:pack`.
-2. Summarize any warnings or failures in plain language.
-3. Suggest the narrowest fix.
-4. Wait for user confirmation before any publish-related command.
+2. Summarize every warning or failure in plain language.
+3. Suggest the smallest fix, usually tightening `package.json` `files` or ignore rules.
+4. Wait for user confirmation before any publish-related command such as `npm publish`.
 
 # High-Risk Operations
 

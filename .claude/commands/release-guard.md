@@ -1,10 +1,17 @@
 ---
 description: Run the release guard before any publish flow
+allowed-tools: Bash(npm run audit:pack)
 ---
 
 Use the repository release-guard workflow before any publish action.
 
+## Context
+
+- Latest release-guard output: !`npm run audit:pack`
+
+## Your task
+
 1. Run `npm run audit:pack`.
-2. Summarize any warnings or failures.
-3. Suggest the narrowest fix.
-4. Do not execute `npm publish` unless the user explicitly asks for it.
+2. Summarize every warning or failure in plain language.
+3. Suggest the smallest fix, usually tightening `package.json` `files` or ignore rules.
+4. Do not publish the package on the user's behalf.

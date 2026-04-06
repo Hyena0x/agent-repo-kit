@@ -1,5 +1,7 @@
 # Review Rules
 
+> Managed by `npm run adapters:render`. Edit `adapters/policy/repo-guard-policy.mjs` instead of hand-editing this file.
+
 When reviewing code in this repository:
 
 - flag hard-coded keys, tokens, passwords, or credentials
