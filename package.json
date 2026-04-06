@@ -1,0 +1,31 @@
+{
+  "name": "repo-guard-starter",
+  "version": "0.1.0",
+  "description": "Claude Code-first repo guardrails and a publish-time release guard for AI coding repos.",
+  "type": "module",
+  "private": false,
+  "engines": {
+    "node": ">=18"
+  },
+  "scripts": {
+    "audit:pack": "node ./scripts/audit-pack.mjs",
+    "test": "node --test ./tests/*.test.mjs"
+  },
+  "files": [
+    "README.md",
+    "CLAUDE.md",
+    "REVIEW.md",
+    ".mcp.json.example",
+    ".claude",
+    ".github",
+    "scripts"
+  ],
+  "keywords": [
+    "claude-code",
+    "ai-coding",
+    "release-guard",
+    "npm-pack",
+    "devsecops"
+  ],
+  "license": "MIT"
+}
