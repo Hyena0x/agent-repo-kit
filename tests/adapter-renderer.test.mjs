@@ -5,6 +5,7 @@ import path from "node:path";
 
 import { repoGuardPolicy } from "../adapters/policy/repo-guard-policy.mjs";
 import { renderClaudeCodeArtifacts } from "../adapters/targets/claude-code/render.mjs";
+import { renderCodexArtifacts } from "../adapters/targets/codex/render.mjs";
 import { renderGenericPolicyManifest } from "../adapters/targets/generic/render.mjs";
 
 test("Claude adapter renders the expected generated files", () => {
@@ -42,6 +43,16 @@ test("Claude slash command is wired to the shared release-guard command", () => 
 
   assert.match(command, /allowed-tools: Bash\(npm run audit:pack\)/);
   assert.match(command, /Latest release-guard output: !`npm run audit:pack`/);
+});
+
+test("Codex adapter emits a repo instruction file without fake Claude-only surfaces", () => {
+  const artifacts = renderCodexArtifacts(repoGuardPolicy);
+  const agents = artifacts["AGENTS.md"];
+
+  assert.ok(agents.includes("Codex-oriented projection"));
+  assert.ok(agents.includes("it does not pretend Codex has Claude Code's hook or permission model"));
+  assert.ok(agents.includes("npm run audit:pack"));
+  assert.ok(!agents.includes("PreToolUse"));
 });
 
 test("adapter outputs in the repo stay in sync with the shared policy", () => {

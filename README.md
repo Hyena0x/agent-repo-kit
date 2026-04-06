@@ -20,6 +20,7 @@ AI coding tools can move fast enough to make small mistakes expensive. A repo th
 ## What ships in v1
 
 - `CLAUDE.md` for project guidance and security red lines
+- `AGENTS.md` as a Codex-style repo instruction file generated from the shared policy
 - `REVIEW.md` for review-specific checks
 - `adapters/policy/repo-guard-policy.mjs` as the shared policy source of truth
 - `adapters/targets/*` renderers so Claude Code files are generated from shared policy
@@ -80,7 +81,7 @@ The shared policy now lives outside the Claude-specific files.
 - run `npm run adapters:render`
 - verify with `npm run adapters:check`
 
-Today the repo ships one real target adapter for Claude Code plus one generic JSON manifest exporter. That is enough to keep Claude Code first-class while giving future Codex, Cursor, Amp, or custom internal adapters a stable input format. More detail lives in `adapters/README.md` and `docs/adapter-architecture.md`.
+Today the repo ships real target adapters for Claude Code and Codex, plus one generic JSON manifest exporter. That is enough to keep Claude Code first-class while giving future Cursor, Amp, or custom internal adapters a stable input format. More detail lives in `adapters/README.md` and `docs/adapter-architecture.md`.
 
 ## Design notes
 
@@ -90,12 +91,15 @@ This repo is intentionally Claude Code-first instead of pretending every AI codi
 
 ```text
 repo-guard-starter/
+├── AGENTS.md
 ├── adapters/
 │   ├── generated/
 │   │   └── repo-guard-policy.json
 │   ├── policy/
 │   │   └── repo-guard-policy.mjs
 │   ├── targets/
+│   │   ├── codex/
+│   │   │   └── render.mjs
 │   │   ├── claude-code/
 │   │   │   └── render.mjs
 │   │   └── generic/

@@ -5,6 +5,7 @@ This directory keeps the policy source of truth separate from any one AI coding 
 ## Design
 
 - `policy/` owns the shared semantics: release flow, review checks, secret paths, and risky shell detectors.
+- `targets/codex/` maps the shared policy to a Codex-style `AGENTS.md` instruction file.
 - `targets/claude-code/` maps that policy to Claude Code files such as `.claude/settings.json`, `CLAUDE.md`, the hook, the skill, and the slash command.
 - `targets/generic/` exports a tool-agnostic JSON manifest that future adapters can consume without reverse-engineering Claude-specific files.
 

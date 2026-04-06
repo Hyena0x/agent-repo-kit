@@ -16,6 +16,9 @@
 
 Today there are two render targets:
 
+- `codex`
+  - renders `AGENTS.md`
+  - carries shared repo instructions without faking Claude-only hook or permission support
 - `claude-code`
   - renders `.claude/settings.json`
   - renders `.claude/hooks/pre-tool-check.js`
