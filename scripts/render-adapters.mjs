@@ -5,6 +5,7 @@ import path from "node:path";
 
 import { repoGuardPolicy } from "../adapters/policy/repo-guard-policy.mjs";
 import { renderClaudeCodeArtifacts } from "../adapters/targets/claude-code/render.mjs";
+import { renderCodexArtifacts } from "../adapters/targets/codex/render.mjs";
 import { renderGenericPolicyManifest } from "../adapters/targets/generic/render.mjs";
 
 const rootDirectory = process.cwd();
@@ -12,6 +13,7 @@ const mode = process.argv.includes("--check") ? "check" : "write";
 
 function buildArtifacts() {
   return {
+    ...renderCodexArtifacts(repoGuardPolicy),
     ...renderClaudeCodeArtifacts(repoGuardPolicy),
     "adapters/generated/repo-guard-policy.json": renderGenericPolicyManifest(repoGuardPolicy)
   };
