@@ -2,6 +2,9 @@
 
 Safe defaults and release guard for AI coding repos.
 
+[![release-guard](https://github.com/Hyena0x/repo-guard-starter/actions/workflows/release-guard.yml/badge.svg)](https://github.com/Hyena0x/repo-guard-starter/actions/workflows/release-guard.yml)
+[![license: MIT](https://img.shields.io/badge/license-MIT-green.svg)](https://github.com/Hyena0x/repo-guard-starter/blob/main/LICENSE)
+
 Built for Claude Code first, designed to extend to other AI coding tools. In v1, the Claude-specific pieces are the shared repo config, hook, skill, and slash command. The release guard itself is plain Node.js plus GitHub Actions, so the package-audit workflow can travel to other toolchains later.
 
 Compatible with Claude Code. Not affiliated with Anthropic.
@@ -144,6 +147,14 @@ repo-guard-starter/
 ## MCP example
 
 `.mcp.json.example` is only a safe placeholder. Claude Code reads project MCP servers from `.mcp.json`, so copy the example to `.mcp.json` and wire in real servers yourself when needed.
+
+## Contributing
+
+Contributions are welcome, especially when they improve real repository safety and keep the shared adapter model clean. See `CONTRIBUTING.md` for development and PR expectations.
+
+## License
+
+This project is available under the MIT License. See `LICENSE`.
 
 ## Future
 
