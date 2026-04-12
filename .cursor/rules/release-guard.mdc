@@ -1,0 +1,15 @@
+---
+description: Use when preparing a package release or npm publish flow.
+alwaysApply: false
+---
+
+# Release Guard
+
+Check whether the package contents are safe to publish.
+
+Before suggesting a release or publish action:
+
+1. Run `npm run audit:pack`.
+2. Summarize every warning or failure in plain language.
+3. Suggest the smallest fix, usually tightening `package.json` `files` or ignore rules.
+4. Wait for user confirmation before any publish-related command such as `npm publish`.

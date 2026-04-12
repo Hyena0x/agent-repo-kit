@@ -1,0 +1,54 @@
+---
+description: Shared repo guardrails for safe editing, review, and package-release prep.
+alwaysApply: true
+---
+
+# Repo Guard
+
+This repository provides Claude Code-first guardrails for AI coding repos plus a publish-time release guard for Node packages.
+
+## Core goals
+
+- keep destructive commands out of normal repo work
+- prevent accidental package leaks before `npm publish`
+- make high-risk operations explicit and reviewable
+
+## Safety red lines
+
+Do not read or print secrets from:
+
+- `./.env`
+- `./.env.*`
+- `./secrets/**`
+- `./certs/**`
+- `./*.pem`
+- `./**/*.pem`
+
+Avoid destructive shell actions such as:
+
+- `rm -rf`
+- `git push --force`
+- `chmod 777`
+- `mkfs`
+- `dd if=... of=/dev/...`
+- `curl ... | bash`
+- `wget ... | sh`
+
+Do not publish packages without explicit user confirmation.
+
+## Working workflow
+
+1. Understand the requested change and the likely impact.
+2. Make the smallest safe edit that solves the problem.
+3. Run focused verification such as `npm test` and `npm run audit:pack`.
+4. Summarize what changed, what was verified, and any remaining risk.
+
+## Review focus
+
+When reviewing code in this repository:
+
+- flag hard-coded keys, tokens, passwords, or credentials
+- flag logs that may expose secrets or sensitive identifiers
+- flag likely SQL injection, XSS, SSRF, or command-injection paths
+- flag newly added API routes that do not appear to have tests
+- ignore formatting-only changes and lockfile noise unless they hide a real issue
