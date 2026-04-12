@@ -14,11 +14,14 @@
 2. `adapters/targets/*/render.mjs`
    Maps that policy onto concrete files a tool actually understands.
 
-Today there are two render targets:
+Today there are four render targets:
 
 - `codex`
   - renders `AGENTS.md`
   - carries shared repo instructions without faking Claude-only hook or permission support
+- `cursor`
+  - renders `.cursor/rules/*.mdc`
+  - uses official Cursor project rules instead of inventing a fake hook or permission layer
 - `claude-code`
   - renders `.claude/settings.json`
   - renders `.claude/hooks/pre-tool-check.js`

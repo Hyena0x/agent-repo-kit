@@ -18,6 +18,7 @@
     "AGENTS.md",
     "CLAUDE.md",
     "REVIEW.md",
+    ".cursor",
     "adapters",
     "docs",
     ".mcp.json.example",

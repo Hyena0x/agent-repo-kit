@@ -6,6 +6,7 @@ import path from "node:path";
 import { repoGuardPolicy } from "../adapters/policy/repo-guard-policy.mjs";
 import { renderClaudeCodeArtifacts } from "../adapters/targets/claude-code/render.mjs";
 import { renderCodexArtifacts } from "../adapters/targets/codex/render.mjs";
+import { renderCursorArtifacts } from "../adapters/targets/cursor/render.mjs";
 import { renderGenericPolicyManifest } from "../adapters/targets/generic/render.mjs";
 
 test("Claude adapter renders the expected generated files", () => {
@@ -53,6 +54,18 @@ test("Codex adapter emits a repo instruction file without fake Claude-only surfa
   assert.ok(agents.includes("it does not pretend Codex has Claude Code's hook or permission model"));
   assert.ok(agents.includes("npm run audit:pack"));
   assert.ok(!agents.includes("PreToolUse"));
+});
+
+test("Cursor adapter emits project rules in official MDC form", () => {
+  const artifacts = renderCursorArtifacts(repoGuardPolicy);
+  const repoGuard = artifacts[".cursor/rules/repo-guard.mdc"];
+  const releaseGuard = artifacts[".cursor/rules/release-guard.mdc"];
+
+  assert.ok(repoGuard.includes("alwaysApply: true"));
+  assert.ok(repoGuard.includes("Shared repo guardrails"));
+  assert.ok(repoGuard.includes("rm -rf"));
+  assert.ok(releaseGuard.includes("alwaysApply: false"));
+  assert.ok(releaseGuard.includes("npm run audit:pack"));
 });
 
 test("adapter outputs in the repo stay in sync with the shared policy", () => {
