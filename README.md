@@ -3,6 +3,8 @@
 Score and fix your GitHub repo for AI coding agents.
 
 [![agent-repo-kit](https://github.com/Hyena0x/agent-repo-kit/actions/workflows/agent-repo-kit.yml/badge.svg)](https://github.com/Hyena0x/agent-repo-kit/actions/workflows/agent-repo-kit.yml)
+[![npm version](https://img.shields.io/npm/v/agent-repo-kit.svg)](https://www.npmjs.com/package/agent-repo-kit)
+[![release](https://img.shields.io/github/v/release/Hyena0x/agent-repo-kit?label=release)](https://github.com/Hyena0x/agent-repo-kit/releases/latest)
 [![license: MIT](https://img.shields.io/badge/license-MIT-green.svg)](https://github.com/Hyena0x/agent-repo-kit/blob/main/LICENSE)
 
 Agent Repo Kit turns repo readiness into a visible loop:
