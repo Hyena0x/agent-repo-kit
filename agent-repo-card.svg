@@ -1,0 +1,8 @@
+<svg xmlns="http://www.w3.org/2000/svg" width="920" height="360" viewBox="0 0 920 360" role="img" aria-label="Agent-ready score 100 out of 100">
+  <rect width="920" height="360" rx="24" fill="#0f172a"/>
+  <text x="48" y="78" fill="#f8fafc" font-family="Arial, sans-serif" font-size="34" font-weight="700">Agent Repo Kit</text>
+  <text x="48" y="122" fill="#cbd5e1" font-family="Arial, sans-serif" font-size="22">Agent-ready score</text>
+  <text x="48" y="238" fill="#15803d" font-family="Arial, sans-serif" font-size="112" font-weight="700">100</text>
+  <text x="212" y="238" fill="#94a3b8" font-family="Arial, sans-serif" font-size="48">/100</text>
+  <text x="48" y="300" fill="#e2e8f0" font-family="Arial, sans-serif" font-size="22">Make your GitHub repo easier, safer, and more verifiable for AI coding agents.</text>
+</svg>

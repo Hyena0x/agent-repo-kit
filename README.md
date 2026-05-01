@@ -18,6 +18,12 @@ Agent Repo Kit checks whether your repo has the signals AI coding agents need: i
 - **Dry-run first**: inspect fixes before files change
 - **Shareable output**: publish the score, report, JSON, or card
 
+## Example Output
+
+This repo dogfoods Agent Repo Kit:
+
+![Agent-ready score 100/100](./agent-repo-card.svg)
+
 ## Why It Exists
 
 Most repos are not agent-ready. They may have tests and docs, but agents still need clear answers:

@@ -20,6 +20,7 @@
   },
   "files": [
     "README.md",
+    "agent-repo-card.svg",
     "AGENTS.md",
     "CLAUDE.md",
     "REVIEW.md",

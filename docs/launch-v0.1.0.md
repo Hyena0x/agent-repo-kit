@@ -4,6 +4,10 @@ Primary link:
 
 https://github.com/Hyena0x/agent-repo-kit
 
+Share image:
+
+`agent-repo-card.svg`
+
 Install:
 
 ```bash
