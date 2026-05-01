@@ -28,7 +28,7 @@ test("package exposes the agent-repo-kit binary", () => {
   const packageJson = JSON.parse(readFileSync(path.join(rootDirectory, "package.json"), "utf8"));
 
   assert.deepEqual(packageJson.bin, {
-    "agent-repo-kit": "./scripts/agent-repo-kit.mjs"
+    "agent-repo-kit": "scripts/agent-repo-kit.mjs"
   });
 });
 
