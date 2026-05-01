@@ -1,6 +1,6 @@
 {
   "name": "agent-repo-kit",
-  "version": "0.1.0",
+  "version": "0.1.1",
   "description": "Score and fix GitHub repos for AI coding agents.",
   "type": "module",
   "private": false,
