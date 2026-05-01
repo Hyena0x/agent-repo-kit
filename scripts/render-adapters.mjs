@@ -3,7 +3,7 @@
 import { mkdirSync, readFileSync, writeFileSync } from "node:fs";
 import path from "node:path";
 
-import { repoGuardPolicy } from "../adapters/policy/repo-guard-policy.mjs";
+import { agentRepoKitPolicy } from "../adapters/policy/agent-repo-kit-policy.mjs";
 import { renderClaudeCodeArtifacts } from "../adapters/targets/claude-code/render.mjs";
 import { renderCodexArtifacts } from "../adapters/targets/codex/render.mjs";
 import { renderCursorArtifacts } from "../adapters/targets/cursor/render.mjs";
@@ -14,10 +14,10 @@ const mode = process.argv.includes("--check") ? "check" : "write";
 
 function buildArtifacts() {
   return {
-    ...renderCodexArtifacts(repoGuardPolicy),
-    ...renderCursorArtifacts(repoGuardPolicy),
-    ...renderClaudeCodeArtifacts(repoGuardPolicy),
-    "adapters/generated/repo-guard-policy.json": renderGenericPolicyManifest(repoGuardPolicy)
+    ...renderCodexArtifacts(agentRepoKitPolicy),
+    ...renderCursorArtifacts(agentRepoKitPolicy),
+    ...renderClaudeCodeArtifacts(agentRepoKitPolicy),
+    "adapters/generated/agent-repo-kit-policy.json": renderGenericPolicyManifest(agentRepoKitPolicy)
   };
 }
 

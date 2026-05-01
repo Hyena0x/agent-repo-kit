@@ -14,7 +14,7 @@ function writePackageFile(root, relativePath, content) {
 }
 
 function createPackage(options) {
-  const root = mkdtempSync(path.join(tmpdir(), "repo-guard-starter-"));
+  const root = mkdtempSync(path.join(tmpdir(), "agent-repo-kit-"));
   const packageJson = {
     name: options.name ?? "fixture-package",
     version: "1.0.0",

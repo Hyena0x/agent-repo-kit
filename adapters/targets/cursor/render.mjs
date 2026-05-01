@@ -7,12 +7,12 @@ function renderNumberedList(items) {
 }
 
 export function renderCursorArtifacts(policy) {
-  const repoGuardRule = `---
-description: Shared repo guardrails for safe editing, review, and package-release prep.
+  const agentRepoKitRule = `---
+description: Shared Agent Repo Kit rules for report, fix, review, and package-release prep.
 alwaysApply: true
 ---
 
-# Repo Guard
+# Agent Repo Kit
 
 ${policy.workspace.overview}
 
@@ -43,25 +43,33 @@ ${policy.review.intro}
 ${renderBulletList(policy.review.checks)}
 `;
 
-  const releaseGuardRule = `---
-description: Use when preparing a package release or npm publish flow.
+  const reportRule = `---
+description: Use when generating an Agent Repo Report and share card.
 alwaysApply: false
 ---
 
-# Release Guard
+# Agent Repo Report
 
-${policy.releaseGuard.summary}
+${policy.report.summary}
 
-Before suggesting a release or publish action:
+${renderNumberedList(policy.report.steps)}
+`;
 
-${renderNumberedList([
-    ...policy.releaseGuard.steps.slice(0, 3),
-    `Wait for user confirmation before any publish-related command such as \`${policy.releaseGuard.publishCommand}\`.`
-  ])}
+  const fixRule = `---
+description: Use when previewing or applying Agent Repo Kit fixes.
+alwaysApply: false
+---
+
+# Agent Repo Fix
+
+${policy.fix.summary}
+
+${renderNumberedList(policy.fix.steps)}
 `;
 
   return {
-    ".cursor/rules/repo-guard.mdc": repoGuardRule,
-    ".cursor/rules/release-guard.mdc": releaseGuardRule
+    ".cursor/rules/agent-repo-kit.mdc": agentRepoKitRule,
+    ".cursor/rules/agent-repo-report.mdc": reportRule,
+    ".cursor/rules/agent-repo-fix.mdc": fixRule
   };
 }

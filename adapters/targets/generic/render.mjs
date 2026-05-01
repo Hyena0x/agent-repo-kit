@@ -3,6 +3,8 @@ export function renderGenericPolicyManifest(policy) {
     schemaVersion: policy.schemaVersion,
     id: policy.id,
     positioning: policy.positioning,
+    report: policy.report,
+    fix: policy.fix,
     releaseGuard: policy.releaseGuard,
     workspace: policy.workspace,
     permissions: policy.permissions,

@@ -1,6 +1,6 @@
 # Contributing
 
-Thanks for helping improve `repo-guard-starter`.
+Thanks for helping improve Agent Repo Kit.
 
 ## Before you open a PR
 
@@ -11,7 +11,8 @@ Before opening a pull request:
 1. Explain the user problem or workflow gap the change addresses.
 2. Prefer updating the shared policy and renderer pipeline instead of hand-editing generated adapter files.
 3. Regenerate adapter outputs when policy or renderer behavior changes.
-4. Run the local checks listed below.
+4. Keep the public surface centered on `agent-repo-report` and `agent-repo-fix`.
+5. Run the local checks listed below.
 
 ## Local development
 
@@ -19,6 +20,8 @@ Install dependencies and run the main checks:
 
 ```bash
 npm install
+npm run report
+npm run fix -- --dry-run
 npm run adapters:check
 npm test
 npm run audit:pack
@@ -32,7 +35,7 @@ npm run adapters:render
 
 ## Repository conventions
 
-- Treat `adapters/policy/repo-guard-policy.mjs` as the source of truth for shared semantics.
+- Treat `adapters/policy/agent-repo-kit-policy.mjs` as the source of truth for shared semantics.
 - Treat generated files such as `AGENTS.md`, `.claude/...`, and `.cursor/rules/*.mdc` as outputs of the render pipeline.
 - Keep adapter mappings honest. If a target tool does not support Claude-style hooks or permission rules, do not fake a one-to-one translation.
 - Do not expand scope with enterprise integrations unless there is a concrete repo-level use case.
@@ -42,6 +45,6 @@ npm run adapters:render
 Good PRs in this repository usually include:
 
 - a short explanation of what changed
-- why the change matters to repo safety or release guard behavior
+- why the change matters to repo readiness, report quality, fix safety, or publish safety
 - the checks you ran
 - any limitations or future follow-up if the adapter surface is partial by design

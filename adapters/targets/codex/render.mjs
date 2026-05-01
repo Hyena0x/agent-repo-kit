@@ -9,9 +9,9 @@ function renderNumberedList(items) {
 export function renderCodexArtifacts(policy) {
   const agentsMd = `# AGENTS.md
 
-> Managed by \`npm run adapters:render\`. Edit \`adapters/policy/repo-guard-policy.mjs\` instead of hand-editing this file.
+> Managed by \`npm run adapters:render\`. Edit \`adapters/policy/agent-repo-kit-policy.mjs\` instead of hand-editing this file.
 
-This file is the Codex-oriented projection of the shared repo-guard policy. It is intentionally instruction-first: it carries workflow, review, and release expectations, but it does not pretend Codex has Claude Code's hook or permission model.
+This file is the Codex-oriented projection of the shared Agent Repo Kit policy. It is intentionally instruction-first: it carries workflow, review, report, and fix expectations, but it does not pretend Codex has Claude Code's hook or permission model.
 
 ## Project Overview
 
@@ -20,7 +20,6 @@ ${policy.workspace.overview}
 Primary positioning:
 
 - ${policy.positioning.summary}
-- Primary tool today: ${policy.positioning.primaryTool}
 - Extension targets: ${policy.positioning.extensionTargets.join(", ")}
 
 ## Core Goals
@@ -43,7 +42,19 @@ Do not publish packages without explicit user confirmation.
 
 ${renderNumberedList(policy.workspace.changeWorkflow)}
 
-## Release Guard
+## Agent Repo Report
+
+${policy.report.summary}
+
+${renderNumberedList(policy.report.steps)}
+
+## Agent Repo Fix
+
+${policy.fix.summary}
+
+${renderNumberedList(policy.fix.steps)}
+
+## Publish Safety
 
 Before suggesting a release or publish action:
 

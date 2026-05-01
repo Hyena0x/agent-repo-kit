@@ -1,0 +1,13 @@
+---
+description: Use when generating an Agent Repo Report and share card.
+alwaysApply: false
+---
+
+# Agent Repo Report
+
+Analyze a repository, score agent readiness, and generate shareable report artifacts.
+
+1. Run `npm run report`.
+2. Read the score, failed checks, and top fixes before suggesting edits.
+3. Use `AGENT_REPO_REPORT.md` for human review and `agent-repo-card.svg` for sharing.
+4. Do not change repository files as part of report-only work.

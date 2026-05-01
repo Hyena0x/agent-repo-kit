@@ -1,161 +1,140 @@
-# repo-guard-starter
+# Agent Repo Kit
 
-Safe defaults and release guard for AI coding repos.
+Score and fix your GitHub repo for AI coding agents.
 
-[![release-guard](https://github.com/Hyena0x/repo-guard-starter/actions/workflows/release-guard.yml/badge.svg)](https://github.com/Hyena0x/repo-guard-starter/actions/workflows/release-guard.yml)
-[![license: MIT](https://img.shields.io/badge/license-MIT-green.svg)](https://github.com/Hyena0x/repo-guard-starter/blob/main/LICENSE)
+[![agent-repo-kit](https://github.com/Hyena0x/agent-repo-kit/actions/workflows/agent-repo-kit.yml/badge.svg)](https://github.com/Hyena0x/agent-repo-kit/actions/workflows/agent-repo-kit.yml)
+[![license: MIT](https://img.shields.io/badge/license-MIT-green.svg)](https://github.com/Hyena0x/agent-repo-kit/blob/main/LICENSE)
 
-Built for Claude Code first, designed to extend to other AI coding tools. In v1, the Claude-specific pieces are the shared repo config, hook, skill, and slash command. The release guard itself is plain Node.js plus GitHub Actions, so the package-audit workflow can travel to other toolchains later.
+Agent Repo Kit turns repo readiness into a visible loop:
 
-Compatible with Claude Code. Not affiliated with Anthropic.
+1. **Report**: analyze the repo, generate a score, and create a shareable card.
+2. **Fix**: preview and apply the smallest docs, rules, checks, and guardrails agents need.
 
-## Why this exists
+Compatible with Claude Code, Codex, and Cursor. Not affiliated with Anthropic, OpenAI, or Cursor.
 
-AI coding tools can move fast enough to make small mistakes expensive. A repo that feels safe in day-to-day editing can still leak sourcemaps, tests, draft docs, or sensitive files at publish time.
+## Why This Exists
 
-`repo-guard-starter` keeps the first version intentionally small:
+AI coding agents can move quickly, but many repos do not tell them how to work safely. A repo may have tests, CI, and docs, yet still leave agents guessing which command proves a change works, where secrets are off-limits, or what files should never ship.
 
-- Claude Code-first guardrails for day-to-day repo work
-- A shared policy layer that can be rendered into tool-specific adapters
-- A publish-time audit that inspects the exact `npm pack` tarball
-- CI wiring that blocks a merge when risky files would ship
+Agent Repo Kit gives maintainers two public skills:
 
-## What ships in v1
-
-- `CLAUDE.md` for project guidance and security red lines
-- `AGENTS.md` as a Codex-style repo instruction file generated from the shared policy
-- `.cursor/rules/*.mdc` as official Cursor project rules generated from the shared policy
-- `REVIEW.md` for review-specific checks
-- `adapters/policy/repo-guard-policy.mjs` as the shared policy source of truth
-- `adapters/targets/*` renderers so Claude Code files are generated from shared policy
-- `.claude/settings.json` with minimal permission rules and a registered `PreToolUse` hook
-- `.claude/hooks/pre-tool-check.js` to deny obviously destructive Bash commands
-- `.claude/skills/release-guard/SKILL.md` for publish-time guidance
-- `.claude/commands/release-guard.md` so teams also get a real `/release-guard` slash command
-- `adapters/generated/repo-guard-policy.json` as a neutral manifest for future tool adapters
-- `scripts/audit-pack.mjs` to inspect packed artifacts for risky files
-- `.github/workflows/release-guard.yml` to run the guard in PRs
+- `agent-repo-report` for read-only analysis, scoring, and share artifacts
+- `agent-repo-fix` for dry-run-first repo hardening
 
 ## Quickstart
 
-You can get the starter working in about three minutes.
+```bash
+npm install
+npm run report
+npm run fix -- --dry-run
+```
+
+The report writes:
+
+- `AGENT_REPO_REPORT.md`
+- `.agent-repo-kit/report.json`
+- `agent-repo-card.svg`
+
+Apply fixes only after reviewing the dry-run output:
+
+```bash
+npm run fix
+npm run report
+```
+
+## What Gets Checked
+
+The first report pass scores:
+
+- agent instruction entrypoints such as `AGENTS.md`, `CLAUDE.md`, or Cursor rules
+- visible verification commands such as `npm test`, build scripts, or Rust tests
+- README quickstart and development guidance
+- GitHub Actions CI presence
+- `.gitignore` rules for local secrets
+- package publish safety such as `files` or `npm run audit:pack`
+
+## Skills
+
+### `agent-repo-report`
+
+Use this when you want a repo score and shareable artifacts without changing files.
+
+```bash
+npm run report
+```
+
+### `agent-repo-fix`
+
+Use this after reading a report. Always preview before writing.
+
+```bash
+npm run fix -- --dry-run
+npm run fix
+```
+
+In v1 the fix script creates a missing `AGENTS.md` and tightens common local-secret ignore rules. The existing publish-safety audit remains available as a fix module:
+
+```bash
+npm run audit:pack
+```
+
+## Adapter Model
+
+Agent Repo Kit keeps one shared policy and renders tool-specific surfaces from it.
+
+- edit `adapters/policy/agent-repo-kit-policy.mjs`
+- run `npm run adapters:render`
+- verify with `npm run adapters:check`
+
+Current targets:
+
+- Claude Code: `.claude/skills/*`, slash commands, settings, hook
+- Codex: `AGENTS.md`
+- Cursor: `.cursor/rules/*.mdc`
+- Generic: `adapters/generated/agent-repo-kit-policy.json`
+
+## Development
 
 ```bash
 npm install
+npm run adapters:check
 npm test
 npm run audit:pack
 ```
 
-Then copy the example MCP file only if you need it:
+If policy or renderer behavior changes:
 
 ```bash
-cp .mcp.json.example .mcp.json
+npm run adapters:render
 ```
 
-If you use Claude Code in the repo, the shared project settings are already in place:
-
-- read the guardrails in `CLAUDE.md`
-- inspect the review rules in `REVIEW.md`
-- use `/release-guard` before any publish flow
-
-## Example blocked release
-
-If your package accidentally includes a sourcemap, the audit stops the release:
+## Repo Layout
 
 ```text
-$ npm run audit:pack
-
-repo-guard-starter release guard
-Packed artifact: repo-guard-starter-0.1.0.tgz
-Files inspected: 10
-
-WARN
-- package/dist/index.js.map [source-map] Sourcemaps should not ship in the published tarball.
-
-Release guard blocked this package. Tighten package.json "files" or your ignore rules before publishing.
-```
-
-Warnings and failures both exit non-zero on purpose, so CI can fail early.
-
-## Tool adapters
-
-The shared policy now lives outside the Claude-specific files.
-
-- edit `adapters/policy/repo-guard-policy.mjs`
-- run `npm run adapters:render`
-- verify with `npm run adapters:check`
-
-Today the repo ships real target adapters for Claude Code, Codex, and Cursor, plus one generic JSON manifest exporter. That is enough to keep Claude Code first-class while giving future Amp or custom internal adapters a stable input format. More detail lives in `adapters/README.md` and `docs/adapter-architecture.md`.
-
-## Design notes
-
-This repo is intentionally Claude Code-first instead of pretending every AI coding tool works the same way today. The repo-level permissions, hook registration, and slash-command ergonomics are tailored for Claude Code first. The difference now is that those Claude files are rendered from a shared policy model, so the release audit, review rules, and risky-command semantics are no longer trapped inside one tool's syntax.
-
-## Repo layout
-
-```text
-repo-guard-starter/
+agent-repo-kit/
 ├── AGENTS.md
-├── .cursor/
-│   └── rules/
-│       ├── release-guard.mdc
-│       └── repo-guard.mdc
-├── adapters/
-│   ├── generated/
-│   │   └── repo-guard-policy.json
-│   ├── policy/
-│   │   └── repo-guard-policy.mjs
-│   ├── targets/
-│   │   ├── codex/
-│   │   │   └── render.mjs
-│   │   ├── cursor/
-│   │   │   └── render.mjs
-│   │   ├── claude-code/
-│   │   │   └── render.mjs
-│   │   └── generic/
-│   │       └── render.mjs
-│   └── README.md
-├── .claude/
-│   ├── commands/
-│   │   └── release-guard.md
-│   ├── hooks/
-│   │   └── pre-tool-check.js
-│   ├── settings.json
-│   └── skills/
-│       └── release-guard/
-│           └── SKILL.md
-├── .github/
-│   └── workflows/
-│       └── release-guard.yml
-├── .env.example
-├── .gitignore
-├── .mcp.json.example
 ├── CLAUDE.md
 ├── REVIEW.md
-├── README.md
-├── docs/
-│   └── adapter-architecture.md
-├── package.json
+├── .claude/
+│   ├── commands/
+│   │   ├── agent-repo-fix.md
+│   │   └── agent-repo-report.md
+│   ├── hooks/
+│   │   └── pre-tool-check.js
+│   └── skills/
+│       ├── agent-repo-fix/
+│       └── agent-repo-report/
+├── .cursor/
+│   └── rules/
+├── adapters/
 ├── scripts/
+│   ├── agent-repo-fix.mjs
+│   ├── agent-repo-report.mjs
 │   ├── audit-pack.mjs
 │   └── render-adapters.mjs
 └── tests/
-    ├── adapter-renderer.test.mjs
-    └── audit-pack.test.mjs
 ```
-
-## MCP example
-
-`.mcp.json.example` is only a safe placeholder. Claude Code reads project MCP servers from `.mcp.json`, so copy the example to `.mcp.json` and wire in real servers yourself when needed.
-
-## Contributing
-
-Contributions are welcome, especially when they improve real repository safety and keep the shared adapter model clean. See `CONTRIBUTING.md` for development and PR expectations.
 
 ## License
 
-This project is available under the MIT License. See `LICENSE`.
-
-## Future
-
-Future: policy packs / plugin version / team templates
+MIT

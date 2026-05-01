@@ -7,7 +7,7 @@ import path from "node:path";
 
 const npmCommand = process.platform === "win32" ? "npm.cmd" : "npm";
 const tarCommand = process.platform === "win32" ? "tar.exe" : "tar";
-const npmCacheDirectory = mkdtempSync(path.join(tmpdir(), "repo-guard-starter-npm-cache-"));
+const npmCacheDirectory = mkdtempSync(path.join(tmpdir(), "agent-repo-kit-npm-cache-"));
 
 const rules = [
   {
@@ -67,7 +67,7 @@ const rules = [
 ];
 
 function failHard(message, detail) {
-  console.error("repo-guard-starter release guard");
+  console.error("Agent Repo Kit publish safety");
   console.error(`FAIL: ${message}`);
 
   if (detail) {
@@ -166,7 +166,7 @@ try {
   const hits = summarizeMatches(files);
   const status = overallStatus(hits);
 
-  console.log("repo-guard-starter release guard");
+  console.log("Agent Repo Kit publish safety");
   console.log(`Packed artifact: ${path.basename(tarballPath)}`);
   console.log(`Files inspected: ${files.length}`);
   console.log("");

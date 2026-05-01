@@ -1,13 +1,15 @@
 # Adapter Architecture
 
-`repo-guard-starter` is still Claude Code-first, but the policy surface now has a clean split between shared intent and tool-specific rendering.
+Agent Repo Kit is product-first and adapter-backed. The public surface is two skills, while the adapter layer keeps Claude Code, Codex, Cursor, and future tools aligned.
 
 ## Layers
 
-1. `adapters/policy/repo-guard-policy.mjs`
+1. `adapters/policy/agent-repo-kit-policy.mjs`
    Defines the shared policy:
    - positioning
-   - release-guard workflow
+   - report workflow
+   - fix workflow
+   - publish-safety workflow
    - permission intent
    - risky command detectors
    - review checklist
@@ -25,28 +27,30 @@ Today there are four render targets:
 - `claude-code`
   - renders `.claude/settings.json`
   - renders `.claude/hooks/pre-tool-check.js`
-  - renders `CLAUDE.md`, `REVIEW.md`, the release-guard skill, and the slash command
+  - renders `CLAUDE.md`, `REVIEW.md`, both public skills, and both slash commands
 - `generic`
-  - exports `adapters/generated/repo-guard-policy.json`
+  - exports `adapters/generated/agent-repo-kit-policy.json`
   - acts as an interchange manifest for future adapters
 
-## Why this matters
+## Why This Matters
 
-Without this split, every new tool integration would copy the same rules into a different syntax, and those copies would drift.
+Without this split, every new tool integration would copy the same report, fix, and safety rules into a different syntax, and those copies would drift.
 
 With the split:
 
-- policy answers "what are we trying to enforce?"
-- adapters answer "how does this tool express that policy?"
+- policy answers "what are we trying to do?"
+- adapters answer "how does this tool express that workflow?"
 
-## Current extension path
+## Current Extension Path
 
 If we add another tool later, the adapter should consume the shared policy and translate at least these surfaces:
 
+- report command and outputs
+- dry-run-first fix workflow
 - safe-by-default commands
 - ask-before-running commands
 - denied secret paths
-- release-guard workflow guidance
+- publish-safety guidance
 - code-review checklist
 - risky shell interception, if the target tool supports it
 

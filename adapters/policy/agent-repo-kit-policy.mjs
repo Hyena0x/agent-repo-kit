@@ -1,19 +1,51 @@
-export const repoGuardPolicy = {
+export const agentRepoKitPolicy = {
   schemaVersion: 1,
-  id: "repo-guard-starter",
+  id: "agent-repo-kit",
   positioning: {
-    tagline: "Safe defaults and release guard for AI coding repos.",
-    summary: "Built for Claude Code first, designed to extend to other AI coding tools.",
-    primaryTool: "Claude Code",
-    extensionTargets: ["Codex", "Cursor", "Amp"],
+    name: "Agent Repo Kit",
+    tagline: "Score and fix your GitHub repo for AI coding agents.",
+    summary:
+      "Make any GitHub repo easier, safer, and more verifiable for AI coding agents.",
+    primaryAudience: "Developers and maintainers preparing repos for AI coding agents",
+    extensionTargets: ["Claude Code", "Codex", "Cursor", "Amp"],
     extensionStrategy:
-      "Keep policy semantics shared, then let each tool adapter map that policy to its own config, command, and review surfaces."
+      "Keep product semantics shared, then let each tool adapter map report and fix workflows into native files."
+  },
+  report: {
+    id: "agent-repo-report",
+    command: "npm run report",
+    summary:
+      "Analyze a repository, score agent readiness, and generate shareable report artifacts.",
+    outputs: [
+      "AGENT_REPO_REPORT.md",
+      ".agent-repo-kit/report.json",
+      "agent-repo-card.svg"
+    ],
+    steps: [
+      "Run `npm run report`.",
+      "Read the score, failed checks, and top fixes before suggesting edits.",
+      "Use `AGENT_REPO_REPORT.md` for human review and `agent-repo-card.svg` for sharing.",
+      "Do not change repository files as part of report-only work."
+    ]
+  },
+  fix: {
+    id: "agent-repo-fix",
+    command: "npm run fix",
+    dryRunCommand: "npm run fix -- --dry-run",
+    summary:
+      "Apply the smallest repo changes that make AI coding agents easier to onboard and verify.",
+    steps: [
+      "Run `npm run fix -- --dry-run` first.",
+      "Explain every planned file change in plain language.",
+      "Apply changes only after explicit user confirmation.",
+      "Run `npm run report` again and compare the new score."
+    ]
   },
   releaseGuard: {
-    id: "release-guard",
+    id: "publish-safety",
     command: "npm run audit:pack",
     publishCommand: "npm publish",
-    summary: "Check whether the package contents are safe to publish.",
+    summary: "Check whether package contents are safe to publish.",
     steps: [
       "Run `npm run audit:pack`.",
       "Summarize every warning or failure in plain language.",
@@ -23,17 +55,19 @@ export const repoGuardPolicy = {
   },
   workspace: {
     overview:
-      "This repository provides Claude Code-first guardrails for AI coding repos plus a publish-time release guard for Node packages.",
+      "Agent Repo Kit provides two public skills: report scores a repo for AI coding agents, and fix adds the minimum docs, rules, checks, and guardrails agents need.",
     goals: [
-      "keep destructive commands out of normal repo work",
-      "prevent accidental package leaks before `npm publish`",
-      "make high-risk operations explicit and reviewable"
+      "make repo readiness visible with a shareable score",
+      "give agents one clear onboarding and verification path",
+      "keep risky changes, secret handling, and publish safety explicit",
+      "support Claude Code first while keeping Codex and Cursor projections honest"
     ],
     changeWorkflow: [
-      "Understand the requested change and the likely impact.",
-      "Make the smallest safe edit that solves the problem.",
-      "Run focused verification such as `npm test` and `npm run audit:pack`.",
-      "Summarize what changed, what was verified, and any remaining risk."
+      "Start with `npm run report` to establish the current score.",
+      "Use `npm run fix -- --dry-run` before applying repo changes.",
+      "Make the smallest safe edit that improves a failed check.",
+      "Run focused verification such as `npm test`, `npm run adapters:check`, and `npm run report`.",
+      "Summarize the score change, files touched, and remaining risk."
     ],
     highRiskOperations: [
       "explain why the action is needed",
@@ -56,12 +90,16 @@ export const repoGuardPolicy = {
       "git diff *",
       "npm test",
       "npm run test *",
+      "npm run report",
+      "npm run fix -- --dry-run",
+      "npm run adapters:check",
       "npm run audit:pack",
       "npm pack --json"
     ],
     bashAsk: [
       "git commit *",
       "git push *",
+      "npm run fix *",
       "npm publish *"
     ],
     bashDeny: [
@@ -123,7 +161,8 @@ export const repoGuardPolicy = {
       "flag hard-coded keys, tokens, passwords, or credentials",
       "flag logs that may expose secrets or sensitive identifiers",
       "flag likely SQL injection, XSS, SSRF, or command-injection paths",
-      "flag newly added API routes that do not appear to have tests",
+      "flag newly added agent-facing commands that do not have tests",
+      "flag generated adapter files that drift from the shared policy",
       "ignore formatting-only changes and lockfile noise unless they hide a real issue"
     ]
   }

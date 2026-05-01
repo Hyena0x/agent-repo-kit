@@ -39,7 +39,7 @@ function renderSettings(policy) {
 function renderClaudeMd(policy) {
   return `# Project Overview
 
-> Managed by \`npm run adapters:render\`. Edit \`adapters/policy/repo-guard-policy.mjs\` instead of hand-editing this file.
+> Managed by \`npm run adapters:render\`. Edit \`adapters/policy/agent-repo-kit-policy.mjs\` instead of hand-editing this file.
 
 ${policy.workspace.overview}
 
@@ -67,7 +67,21 @@ When making changes in this repo:
 
 ${renderNumberedList(policy.workspace.changeWorkflow)}
 
-# Release Expectations
+# Public Skills
+
+## ${policy.report.id}
+
+${policy.report.summary}
+
+${renderNumberedList(policy.report.steps)}
+
+## ${policy.fix.id}
+
+${policy.fix.summary}
+
+${renderNumberedList(policy.fix.steps)}
+
+# Publish Safety
 
 Before suggesting a release or publish action:
 
@@ -87,7 +101,7 @@ ${renderBulletList(policy.workspace.highRiskOperations)}
 function renderReviewMd(policy) {
   return `# Review Rules
 
-> Managed by \`npm run adapters:render\`. Edit \`adapters/policy/repo-guard-policy.mjs\` instead of hand-editing this file.
+> Managed by \`npm run adapters:render\`. Edit \`adapters/policy/agent-repo-kit-policy.mjs\` instead of hand-editing this file.
 
 ${policy.review.intro}
 
@@ -95,36 +109,81 @@ ${renderBulletList(policy.review.checks)}
 `;
 }
 
-function renderReleaseGuardCommand(policy) {
+function renderReportCommand(policy) {
   return `---
-description: Run the release guard before any publish flow
-allowed-tools: Bash(${policy.releaseGuard.command})
+description: Generate an Agent Repo Report and share card
+allowed-tools: Bash(${policy.report.command})
 ---
 
-Use the repository ${policy.releaseGuard.id} workflow before any publish action.
+Use ${policy.report.id} to score the current repo for AI coding agents.
 
 ## Context
 
-- Latest release-guard output: !\`${policy.releaseGuard.command}\`
+- Latest Agent Repo Report output: !\`${policy.report.command}\`
 
 ## Your task
 
-${renderNumberedList(policy.releaseGuard.steps)}
+${renderNumberedList(policy.report.steps)}
 `;
 }
 
-function renderReleaseGuardSkill(policy) {
-  return `# ${policy.releaseGuard.id}
+function renderFixCommand(policy) {
+  return `---
+description: Preview Agent Repo Kit fixes before applying them
+allowed-tools: Bash(${policy.fix.dryRunCommand})
+---
 
-Use this skill before any package publish flow.
+Use ${policy.fix.id} only after an Agent Repo Report exists or the user explicitly asks to improve repo readiness.
+
+## Context
+
+- Planned changes: !\`${policy.fix.dryRunCommand}\`
+
+## Your task
+
+${renderNumberedList(policy.fix.steps)}
+
+Do not apply changes without explicit user confirmation.
+`;
+}
+
+function renderReportSkill(policy) {
+  return `# ${policy.report.id}
+
+Use this skill when a user wants to analyze, score, or share how ready a repo is for AI coding agents.
 
 ## Goal
 
-${policy.releaseGuard.summary}
+${policy.report.summary}
+
+## Outputs
+
+${renderBulletList(policy.report.outputs.map((output) => `\`${output}\``))}
 
 ## Workflow
 
-${renderNumberedList(policy.releaseGuard.steps)}
+${renderNumberedList(policy.report.steps)}
+`;
+}
+
+function renderFixSkill(policy) {
+  return `# ${policy.fix.id}
+
+Use this skill when a user wants to improve a repo after reviewing an Agent Repo Report.
+
+## Goal
+
+${policy.fix.summary}
+
+## Workflow
+
+${renderNumberedList(policy.fix.steps)}
+
+## Safety
+
+- Prefer dry-run output before edits.
+- Preserve existing user content unless a generated replacement is clearly requested.
+- Keep publish safety as one fix module, not a separate public skill.
 `;
 }
 
@@ -190,7 +249,9 @@ export function renderClaudeCodeArtifacts(policy) {
     "REVIEW.md": renderReviewMd(policy),
     ".claude/settings.json": renderSettings(policy),
     ".claude/hooks/pre-tool-check.js": renderHook(policy),
-    ".claude/commands/release-guard.md": renderReleaseGuardCommand(policy),
-    ".claude/skills/release-guard/SKILL.md": renderReleaseGuardSkill(policy)
+    ".claude/commands/agent-repo-report.md": renderReportCommand(policy),
+    ".claude/commands/agent-repo-fix.md": renderFixCommand(policy),
+    ".claude/skills/agent-repo-report/SKILL.md": renderReportSkill(policy),
+    ".claude/skills/agent-repo-fix/SKILL.md": renderFixSkill(policy)
   };
 }

@@ -7,12 +7,16 @@
       "Bash(git diff *)",
       "Bash(npm test)",
       "Bash(npm run test *)",
+      "Bash(npm run report)",
+      "Bash(npm run fix -- --dry-run)",
+      "Bash(npm run adapters:check)",
       "Bash(npm run audit:pack)",
       "Bash(npm pack --json)"
     ],
     "ask": [
       "Bash(git commit *)",
       "Bash(git push *)",
+      "Bash(npm run fix *)",
       "Bash(npm publish *)"
     ],
     "deny": [

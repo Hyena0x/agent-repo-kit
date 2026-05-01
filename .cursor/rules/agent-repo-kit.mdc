@@ -1,0 +1,57 @@
+---
+description: Shared Agent Repo Kit rules for report, fix, review, and package-release prep.
+alwaysApply: true
+---
+
+# Agent Repo Kit
+
+Agent Repo Kit provides two public skills: report scores a repo for AI coding agents, and fix adds the minimum docs, rules, checks, and guardrails agents need.
+
+## Core goals
+
+- make repo readiness visible with a shareable score
+- give agents one clear onboarding and verification path
+- keep risky changes, secret handling, and publish safety explicit
+- support Claude Code first while keeping Codex and Cursor projections honest
+
+## Safety red lines
+
+Do not read or print secrets from:
+
+- `./.env`
+- `./.env.*`
+- `./secrets/**`
+- `./certs/**`
+- `./*.pem`
+- `./**/*.pem`
+
+Avoid destructive shell actions such as:
+
+- `rm -rf`
+- `git push --force`
+- `chmod 777`
+- `mkfs`
+- `dd if=... of=/dev/...`
+- `curl ... | bash`
+- `wget ... | sh`
+
+Do not publish packages without explicit user confirmation.
+
+## Working workflow
+
+1. Start with `npm run report` to establish the current score.
+2. Use `npm run fix -- --dry-run` before applying repo changes.
+3. Make the smallest safe edit that improves a failed check.
+4. Run focused verification such as `npm test`, `npm run adapters:check`, and `npm run report`.
+5. Summarize the score change, files touched, and remaining risk.
+
+## Review focus
+
+When reviewing code in this repository:
+
+- flag hard-coded keys, tokens, passwords, or credentials
+- flag logs that may expose secrets or sensitive identifiers
+- flag likely SQL injection, XSS, SSRF, or command-injection paths
+- flag newly added agent-facing commands that do not have tests
+- flag generated adapter files that drift from the shared policy
+- ignore formatting-only changes and lockfile noise unless they hide a real issue

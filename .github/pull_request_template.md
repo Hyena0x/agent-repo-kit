@@ -8,6 +8,8 @@
 
 ## Validation
 
+- [ ] `npm run report`
+- [ ] `npm run fix -- --dry-run`
 - [ ] `npm run adapters:check`
 - [ ] `npm test`
 - [ ] `npm run audit:pack`

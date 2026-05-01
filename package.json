@@ -1,7 +1,7 @@
 {
-  "name": "repo-guard-starter",
+  "name": "agent-repo-kit",
   "version": "0.1.0",
-  "description": "Claude Code-first repo guardrails and a publish-time release guard for AI coding repos.",
+  "description": "Score and fix GitHub repos for AI coding agents.",
   "type": "module",
   "private": false,
   "engines": {
@@ -11,6 +11,8 @@
     "adapters:check": "node ./scripts/render-adapters.mjs --check",
     "adapters:render": "node ./scripts/render-adapters.mjs",
     "audit:pack": "node ./scripts/audit-pack.mjs",
+    "fix": "node ./scripts/agent-repo-fix.mjs",
+    "report": "node ./scripts/agent-repo-report.mjs",
     "test": "node --test ./tests/*.test.mjs"
   },
   "files": [
@@ -27,11 +29,12 @@
     "scripts"
   ],
   "keywords": [
-    "claude-code",
+    "ai-agents",
     "ai-coding",
-    "release-guard",
-    "npm-pack",
-    "devsecops"
+    "codex",
+    "claude-code",
+    "repo-readiness",
+    "agent-ready"
   ],
   "license": "MIT"
 }
