@@ -7,6 +7,9 @@
   "engines": {
     "node": ">=18"
   },
+  "bin": {
+    "agent-repo-kit": "./scripts/agent-repo-kit.mjs"
+  },
   "scripts": {
     "adapters:check": "node ./scripts/render-adapters.mjs --check",
     "adapters:render": "node ./scripts/render-adapters.mjs",

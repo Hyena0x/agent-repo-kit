@@ -23,6 +23,15 @@ Agent Repo Kit gives maintainers two public skills:
 
 ## Quickstart
 
+Published package usage:
+
+```bash
+npx agent-repo-kit report
+npx agent-repo-kit fix --dry-run
+```
+
+From a source checkout:
+
 ```bash
 npm install
 npm run report
@@ -38,8 +47,8 @@ The report writes:
 Apply fixes only after reviewing the dry-run output:
 
 ```bash
-npm run fix
-npm run report
+npx agent-repo-kit fix
+npx agent-repo-kit report
 ```
 
 ## What Gets Checked
@@ -60,7 +69,7 @@ The first report pass scores:
 Use this when you want a repo score and shareable artifacts without changing files.
 
 ```bash
-npm run report
+npx agent-repo-kit report
 ```
 
 ### `agent-repo-fix`
@@ -68,8 +77,8 @@ npm run report
 Use this after reading a report. Always preview before writing.
 
 ```bash
-npm run fix -- --dry-run
-npm run fix
+npx agent-repo-kit fix --dry-run
+npx agent-repo-kit fix
 ```
 
 In v1 the fix script creates a missing `AGENTS.md` and tightens common local-secret ignore rules. The existing publish-safety audit remains available as a fix module:
@@ -97,6 +106,7 @@ Current targets:
 
 ```bash
 npm install
+node ./scripts/agent-repo-kit.mjs --help
 npm run adapters:check
 npm test
 npm run audit:pack
@@ -128,6 +138,7 @@ agent-repo-kit/
 │   └── rules/
 ├── adapters/
 ├── scripts/
+│   ├── agent-repo-kit.mjs
 │   ├── agent-repo-fix.mjs
 │   ├── agent-repo-report.mjs
 │   ├── audit-pack.mjs
