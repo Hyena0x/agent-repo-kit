@@ -11,26 +11,39 @@ npx agent-repo-kit report
 npx agent-repo-kit fix --dry-run
 ```
 
-## Positioning
+## One-Liner
 
-Agent Repo Kit scores and fixes GitHub repos for AI coding agents.
-
-It gives maintainers two public skills:
-
-- `agent-repo-report`: generate an agent-readiness report, JSON output, and share card
-- `agent-repo-fix`: preview and apply the smallest repo hardening changes agents need
+Make any GitHub repo ready for Claude Code, Codex, Cursor, and other coding agents in two commands.
 
 ## Short Post
 
 Agent Repo Kit v0.1.0 is live.
 
-It scores and fixes GitHub repos for AI coding agents:
+It checks whether your repo is ready for AI coding agents, then generates:
 
-- report: readiness score, markdown report, JSON, share card
-- fix: dry-run-first hardening for agent instructions and local secret rules
-- works across Claude Code, Codex, Cursor, and generic agent workflows
+- a readiness score
+- a markdown report
+- machine-readable JSON
+- a shareable card
+- dry-run-first fixes
 
 Try it:
+
+```bash
+npx agent-repo-kit report
+npx agent-repo-kit fix --dry-run
+```
+
+https://github.com/Hyena0x/agent-repo-kit
+
+## X / GitHub Pin
+
+Most repos are not ready for AI coding agents.
+
+Agent Repo Kit checks the signals agents need:
+instructions, tests, CI, secret rules, and publish safety.
+
+Then it gives you a score, report, JSON, share card, and dry-run fixes.
 
 ```bash
 npx agent-repo-kit report
@@ -45,18 +58,19 @@ AI coding agents are only as good as the repo context they receive.
 
 Many repos have tests, CI, and docs, but still leave agents guessing:
 
-- which command proves a change works
 - where repo-specific instructions live
-- which files should never ship
+- which command proves a change works
+- whether CI exists
+- which local files must stay secret
 - what a safe first fix should look like
 
-Agent Repo Kit turns that into a simple loop:
+Agent Repo Kit turns those signals into a simple loop:
 
 1. Run `agent-repo-kit report` to generate a readiness score, markdown report, JSON output, and share card.
 2. Run `agent-repo-kit fix --dry-run` to preview the smallest hardening changes.
 3. Apply fixes only after review.
 
-v0.1.0 is now published on npm:
+v0.1.0 is published on npm:
 
 ```bash
 npx agent-repo-kit report
@@ -66,14 +80,3 @@ npx agent-repo-kit fix --dry-run
 Repo:
 
 https://github.com/Hyena0x/agent-repo-kit
-
-## GitHub Release Follow-Up
-
-Agent Repo Kit v0.1.0 is the first public release: an npm-published CLI for scoring and fixing GitHub repos for AI coding agents.
-
-Use `agent-repo-report` for read-only readiness analysis and `agent-repo-fix` for dry-run-first hardening.
-
-```bash
-npx agent-repo-kit report
-npx agent-repo-kit fix --dry-run
-```

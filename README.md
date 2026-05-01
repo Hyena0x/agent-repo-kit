@@ -1,103 +1,84 @@
 # Agent Repo Kit
 
-Score and fix your GitHub repo for AI coding agents.
+Make any GitHub repo ready for Claude Code, Codex, and Cursor in two commands.
 
 [![agent-repo-kit](https://github.com/Hyena0x/agent-repo-kit/actions/workflows/agent-repo-kit.yml/badge.svg)](https://github.com/Hyena0x/agent-repo-kit/actions/workflows/agent-repo-kit.yml)
 [![npm version](https://img.shields.io/npm/v/agent-repo-kit.svg)](https://www.npmjs.com/package/agent-repo-kit)
 [![release](https://img.shields.io/github/v/release/Hyena0x/agent-repo-kit?label=release)](https://github.com/Hyena0x/agent-repo-kit/releases/latest)
 [![license: MIT](https://img.shields.io/badge/license-MIT-green.svg)](https://github.com/Hyena0x/agent-repo-kit/blob/main/LICENSE)
 
-Agent Repo Kit turns repo readiness into a visible loop:
-
-1. **Report**: analyze the repo, generate a score, and create a shareable card.
-2. **Fix**: preview and apply the smallest docs, rules, checks, and guardrails agents need.
-
-Compatible with Claude Code, Codex, and Cursor. Not affiliated with Anthropic, OpenAI, or Cursor.
-
-## Why This Exists
-
-AI coding agents can move quickly, but many repos do not tell them how to work safely. A repo may have tests, CI, and docs, yet still leave agents guessing which command proves a change works, where secrets are off-limits, or what files should never ship.
-
-Agent Repo Kit gives maintainers two public skills:
-
-- `agent-repo-report` for read-only analysis, scoring, and share artifacts
-- `agent-repo-fix` for dry-run-first repo hardening
-
-## Quickstart
-
-Published package usage:
-
 ```bash
 npx agent-repo-kit report
 npx agent-repo-kit fix --dry-run
 ```
 
-From a source checkout:
+Agent Repo Kit checks whether your repo has the signals AI coding agents need: instructions, verification commands, CI, secret rules, and publish safety. It generates a readiness score, a markdown report, machine-readable JSON, and a shareable card, then previews the smallest fixes.
+
+- **No setup required**: run it with `npx`
+- **Dry-run first**: inspect fixes before files change
+- **Shareable output**: publish the score, report, JSON, or card
+
+## Why It Exists
+
+Most repos are not agent-ready. They may have tests and docs, but agents still need clear answers:
+
+- where repo instructions live
+- which command proves a change works
+- whether CI exists
+- which local files must stay secret
+- whether package publish safety is in place
+
+Agent Repo Kit turns those signals into a simple report-and-fix loop.
+
+## Quickstart
+
+Run the read-only report:
 
 ```bash
-npm install
-npm run report
-npm run fix -- --dry-run
+npx agent-repo-kit report
 ```
 
-The report writes:
+It writes:
 
 - `AGENT_REPO_REPORT.md`
 - `.agent-repo-kit/report.json`
 - `agent-repo-card.svg`
 
-Apply fixes only after reviewing the dry-run output:
-
-```bash
-npx agent-repo-kit fix
-npx agent-repo-kit report
-```
-
-## What Gets Checked
-
-The first report pass scores:
-
-- agent instruction entrypoints such as `AGENTS.md`, `CLAUDE.md`, or Cursor rules
-- visible verification commands such as `npm test`, build scripts, or Rust tests
-- README quickstart and development guidance
-- GitHub Actions CI presence
-- `.gitignore` rules for local secrets
-- package publish safety such as `files` or `npm run audit:pack`
-
-## Skills
-
-### `agent-repo-report`
-
-Use this when you want a repo score and shareable artifacts without changing files.
-
-```bash
-npx agent-repo-kit report
-```
-
-### `agent-repo-fix`
-
-Use this after reading a report. Always preview before writing.
+Preview fixes:
 
 ```bash
 npx agent-repo-kit fix --dry-run
-npx agent-repo-kit fix
 ```
 
-In v1 the fix script creates a missing `AGENTS.md` and tightens common local-secret ignore rules. The existing publish-safety audit remains available as a fix module:
+Apply only after reviewing the dry-run:
 
 ```bash
-npm run audit:pack
+npx agent-repo-kit fix
+npx agent-repo-kit report
 ```
 
-## Adapter Model
+## Commands
 
-Agent Repo Kit keeps one shared policy and renders tool-specific surfaces from it.
+| Goal | Command |
+| --- | --- |
+| Score a repo | `npx agent-repo-kit report` |
+| Preview fixes | `npx agent-repo-kit fix --dry-run` |
+| Apply fixes | `npx agent-repo-kit fix` |
 
-- edit `adapters/policy/agent-repo-kit-policy.mjs`
-- run `npm run adapters:render`
-- verify with `npm run adapters:check`
+In v1, `fix` creates a missing `AGENTS.md` and tightens common local-secret ignore rules.
 
-Current targets:
+## What Gets Checked
+
+- agent instruction entrypoints such as `AGENTS.md`, `CLAUDE.md`, and Cursor rules
+- verification commands such as tests and builds
+- README quickstart and development guidance
+- GitHub Actions CI
+- `.gitignore` coverage for local secrets
+- package publish safety such as `files` and `npm run audit:pack`
+
+## Agent Surfaces
+
+Agent Repo Kit keeps one shared policy and renders native surfaces for different tools:
 
 - Claude Code: `.claude/skills/*`, slash commands, settings, hook
 - Codex: `AGENTS.md`
@@ -108,7 +89,6 @@ Current targets:
 
 ```bash
 npm install
-node ./scripts/agent-repo-kit.mjs --help
 npm run adapters:check
 npm test
 npm run audit:pack
@@ -120,33 +100,7 @@ If policy or renderer behavior changes:
 npm run adapters:render
 ```
 
-## Repo Layout
-
-```text
-agent-repo-kit/
-├── AGENTS.md
-├── CLAUDE.md
-├── REVIEW.md
-├── .claude/
-│   ├── commands/
-│   │   ├── agent-repo-fix.md
-│   │   └── agent-repo-report.md
-│   ├── hooks/
-│   │   └── pre-tool-check.js
-│   └── skills/
-│       ├── agent-repo-fix/
-│       └── agent-repo-report/
-├── .cursor/
-│   └── rules/
-├── adapters/
-├── scripts/
-│   ├── agent-repo-kit.mjs
-│   ├── agent-repo-fix.mjs
-│   ├── agent-repo-report.mjs
-│   ├── audit-pack.mjs
-│   └── render-adapters.mjs
-└── tests/
-```
+Not affiliated with Anthropic, OpenAI, or Cursor.
 
 ## License
 
